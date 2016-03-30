@@ -36,4 +36,23 @@
         android:layout_alignParentStart="true"
         android:layout_marginTop="29dp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/MovieVote"
+        android:layout_alignTop="@+id/posterInDetatil"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/date"
+        android:layout_marginTop="61dp"
+        android:layout_below="@+id/MovieVote"
+        android:layout_alignLeft="@+id/MovieVote"
+        android:layout_alignStart="@+id/MovieVote" />
+
 </RelativeLayout>

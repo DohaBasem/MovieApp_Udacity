@@ -23,12 +23,17 @@ public class MovieDetailActivityFragment extends Fragment {
                              Bundle savedInstanceState) {
         View detailView= inflater.inflate(R.layout.fragment_movie_detail, container, false);
         Movie SelectedMovie=(Movie)getActivity().getIntent().getSerializableExtra("SelectedMovieData");
-        String ImgUrl="http://image.tmdb.org/t/p/"+"original"+SelectedMovie.Poster;
+        String ImgUrl="http://image.tmdb.org/t/p/"+"original"+SelectedMovie.getPoster();
         ImageView ImgHolder=(ImageView)detailView.findViewById(R.id.posterInDetatil);
         TextView NameHolder=(TextView)detailView.findViewById(R.id.NameView);
         TextView DescHolder=(TextView)detailView.findViewById(R.id.DescView);
-        NameHolder.setText(SelectedMovie.Name);
-        DescHolder.setText(SelectedMovie.Desc);
+        TextView Vote=(TextView)detailView.findViewById(R.id.MovieVote);
+        TextView date=(TextView)detailView.findViewById(R.id.date);
+
+        NameHolder.setText(SelectedMovie.getName());
+        DescHolder.setText(SelectedMovie.getDesc());
+        Vote.setText("Average Vote : "+SelectedMovie.getVote_count());
+        date.setText("Release date : "+SelectedMovie.getRelease());
         Picasso.with(getContext()).load(ImgUrl).resize(200,200).into((ImageView) ImgHolder);
 
         return detailView;

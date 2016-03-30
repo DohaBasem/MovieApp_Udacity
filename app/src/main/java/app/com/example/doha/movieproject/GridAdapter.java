@@ -18,19 +18,14 @@ import java.util.ArrayList;
 //To make the grid items be displayed with my defined grid item layout
 public class GridAdapter extends ArrayAdapter {
 
-    //ArrayList<String> ImgUrls;
     ArrayList<Movie> Movies;
     Context AdapterContext;
 
-    //public GridAdapter(Context context, int resource,ArrayList<String> ImgUrls)
     public GridAdapter(Context context, int resource,ArrayList<Movie> Movies) {
-        //super(context, resource, ImgUrls);
         super(context, resource, Movies);
-        //this.ImgUrls=ImgUrls;
         this.Movies=Movies;
         this.AdapterContext=context;
         inflater=LayoutInflater.from(AdapterContext);
-       // this.BASE_URL=BASE_URL;
     }
     LayoutInflater inflater;
 
@@ -41,16 +36,11 @@ public class GridAdapter extends ArrayAdapter {
 
 
         if(itemView==null) //No recycled view ,so I will create my own view
-        //{itemView= LayoutInflater.from(AdapterContext).inflate(R.layout.grid_item);}
+
         itemView=inflater.inflate(R.layout.new_image_item,null);
-        //ImageView imageview=(ImageView)itemView.findViewById(R.id.poster);
-        //How can I fetch the data from the array of strings executed from doInBackground ??
-       // Uri.Builder builder = new Uri.Builder();
-        //builder.path(" http://image.tmdb.org/t/p/").appendPath("w185").appendPath(this.ImgUrls.get(position)).build();
-       // builder.authority(" http://image.tmdb.org/t/p/").appendPath("w185").appendPath(this.ImgUrls.get(position));
-       //String myUrl="http://image.tmdb.org/t/p/"+"w342"+this.ImgUrls.get(position);
-        String myUrl="http://image.tmdb.org/t/p/"+"w342"+this.Movies.get(position).Poster;
-      //  String myUrl = builder.build().getPath().toString();
+
+        String myUrl="http://image.tmdb.org/t/p/"+"w342"+this.Movies.get(position).getPoster();
+
        Log.d("URL", myUrl);
         Picasso.with(getContext()).load(myUrl).into((ImageView)itemView);
 

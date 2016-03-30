@@ -81,28 +81,8 @@ public class gridFragment extends Fragment {
     }
 
    public class fetchMovieData extends AsyncTask<Void,Void,Void>{
-       //public ArrayList<String>urls=new ArrayList<String>();
        public ArrayList<Movie>Movies=new ArrayList<Movie>();
-       /*private void getImageUrlFromJson(String JSONString){
 
-        //Since the string starts with curly brackets ,so it is a JSON object
-           try {
-               JSONObject urlJSON=new JSONObject(JSONString);
-               JSONArray resultsArray = urlJSON.getJSONArray("results");
-               for(int i=0;i<resultsArray.length();i++){
-                   String urlString;
-                   JSONObject movie=resultsArray.getJSONObject(i);
-
-                   urls.add(movie.getString("poster_path"));
-
-               }
-           } catch (JSONException e) {
-               e.printStackTrace();
-           }
-
-
-
-       }*/
 
        private void getMovieFromJson(String JSONString){
 
@@ -115,7 +95,7 @@ public class gridFragment extends Fragment {
                    Movie Movie;
                    JSONObject movie=resultsArray.getJSONObject(i);
 
-                   Movie=new Movie(movie.getString("id"),movie.getString("title"),movie.getString("overview"),movie.getString("poster_path"));
+                   Movie=new Movie(movie.getString("id"),movie.getString("title"),movie.getString("overview"),movie.getString("poster_path"),movie.getString("vote_average"),movie.getString("release_date"));
                    Movies.add(Movie);
                }
            } catch (JSONException e) {
@@ -143,20 +123,17 @@ public class gridFragment extends Fragment {
 
 
             try {
-                // Construct the URL for the OpenWeatherMap query
-                // Possible parameters are avaiable at OWM's forecast API page, at
-                // http://openweathermap.org/API#forecast
-               // final String BASE_URL ="http://api.themoviedb.org/3/movie/popular?";
+
                 Uri builtUri = Uri.parse(BASE_URl).buildUpon()
                         //There shoulb be a better way to secure the key !!
-                        .appendQueryParameter("api_key", "d6b3dbd8bd91d833b88bf50495e6d735")
+                        .appendQueryParameter("api_key", "")
                         .build();
 
                 URL url = new URL(builtUri.toString());
 
                 Log.v(LOG_TAG, "Built URI " + builtUri.toString());
 
-                // Create the request to OpenWeatherMap, and open the connection
+
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
                 urlConnection.connect();
@@ -188,8 +165,7 @@ public class gridFragment extends Fragment {
             }
             catch (IOException e) {
                 Log.e(LOG_TAG, "Error ", e);
-                // If the code didn't successfully get the weather data, there's no point in attemping
-                // to parse it.
+
 
             } finally {
                 if (urlConnection != null) {
@@ -205,10 +181,10 @@ public class gridFragment extends Fragment {
             }
 
             int numMovies=25;
-            //getImageUrlFromJson(MovieDataJsonStr);
+
             getMovieFromJson(MovieDataJsonStr);
 
-            // This will only happen if there was an error getting or parsing the forecast.
+
 return null;
         }
 
@@ -220,30 +196,26 @@ return null;
             //if (urls != null)
            if(Movies!=null)
             {
-               // GridAdapter moviesadapter=new GridAdapter(getActivity(),R.layout.grid_item,this.urls);
+
                 final GridAdapter moviesadapter=new GridAdapter(getActivity(),R.layout.grid_item,this.Movies);
 
                 // moviesadapter.clear();
                 moviesadapter.notifyDataSetChanged();
-                //GridView myGrid =(GridView)getActivity().findViewById(R.id.myGrid);
+
                 myGrid =(GridView)getActivity().findViewById(R.id.myGrid);
                 myGrid.setAdapter(moviesadapter);
                 myGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Movie SelectedMovie= (Movie) moviesadapter.getItem(position);
-                        String MovieName=SelectedMovie.Name;
+                        String MovieName=SelectedMovie.getName();
                         //Toast.makeText(getActivity(),MovieName,Toast.LENGTH_LONG).show();
                         Intent toDetail=new Intent(getActivity(),MovieDetailActivity.class).putExtra("SelectedMovieData",SelectedMovie);
                         startActivity(toDetail);
                     }
                 });
 
-                /*for(String imgUrl : resulty().findt) {
 
-                    moviesadapter.add(imgUrl);
-                }*/
-                // New data is back from the server.  Hooray!
             }
         }
     }
