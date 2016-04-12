@@ -22,15 +22,15 @@ import static android.support.test.InstrumentationRegistry.getTargetContext;
  */
 @RunWith(AndroidJUnit4.class)
 public class moviesDBTests {
-    private MoviesDB dbHelper;
+    private MoviesDB DbHelper;
     @Before
     public void setUp() throws Exception {
         getTargetContext().deleteDatabase(MoviesDB.DB_NAME);
-        dbHelper = new MoviesDB(getTargetContext());
+        DbHelper = new MoviesDB(getTargetContext());
     }
     @Test
     public void createTest(){
-        SQLiteDatabase DB=dbHelper.getWritableDatabase();
+        SQLiteDatabase DB=DbHelper.getWritableDatabase();
         Assert.assertTrue(DB.isOpen());
         //To check if the database contains the required table
         Cursor c=DB.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
@@ -65,10 +65,10 @@ public class moviesDBTests {
     @Test
     public void addToFavTest(){
       // SQLiteDatabase Db=new MoviesDB(mContext).getWritableDatabase();
-        SQLiteDatabase DB=dbHelper.getWritableDatabase();
+        SQLiteDatabase DB=DbHelper.getWritableDatabase();
         //Movie(String id,String name,String desc,String poster,String vote,String release)
         Movie movie=new Movie("123","Interstellar","Nice Movie","123456","12","12-6");
-        dbHelper.insertToFav(DB,movie);
+        DbHelper.insertToFav(DB,movie);
       //  assertEquals(true, Db.isOpen());
 
        // Db.close();
@@ -80,7 +80,7 @@ public class moviesDBTests {
     @After
 
     public void tearDown() throws Exception {
-        dbHelper.close();
+        DbHelper.close();
     }
     /*public void testInsertData(){
         SQLiteDatabase Db=new MoviesDB(mContext).getWritableDatabase();
