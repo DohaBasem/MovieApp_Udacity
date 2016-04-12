@@ -54,5 +54,24 @@
         android:layout_below="@+id/MovieVote"
         android:layout_alignLeft="@+id/MovieVote"
         android:layout_alignStart="@+id/MovieVote" />
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/trailersList"
+        android:layout_below="@+id/NameView"></ListView>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/ReviewsList"
+        android:layout_alignTop="@+id/DescView"></ListView>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Favorite"
+        android:id="@+id/favoriteButton"
+        android:layout_alignBottom="@+id/posterInDetatil"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

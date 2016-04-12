@@ -33,13 +33,19 @@ import java.util.ArrayList;
 public class gridFragment extends Fragment {
     String BASE_URl="http://api.themoviedb.org/3/movie/popular?";
     GridView myGrid;
+    fetchMovieData getData=new fetchMovieData();
+
+
     public gridFragment() {
+        setHasOptionsMenu(true);
     }
+   
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        setHasOptionsMenu(true);
+        inflater.inflate(R.menu.menu_main, menu);
+       // setHasOptionsMenu(true);
 
     }
 
@@ -49,12 +55,21 @@ public class gridFragment extends Fragment {
         switch(item.getItemId()){
             case(R.id.Popularity):
             {   this.BASE_URl="http://api.themoviedb.org/3/movie/popular?";
+
+               // fetchMovieData popData=new fetchMovieData();
+                fetchMovieData getPoPData=new fetchMovieData();
+
+                getPoPData.execute();
                 return true;
             }
             case(R.id.rating):{
                 this.BASE_URl="http://api.themoviedb.org/3/movie/top_rated?";
+
+                fetchMovieData getRateData=new fetchMovieData();
+                getRateData.execute();
                 return true;
             }
+
 
         }
         return false;
@@ -74,7 +89,7 @@ public class gridFragment extends Fragment {
 
       //  GridView myGrid =(GridView)getActivity().findViewById(R.id.myGrid);
       //  myGrid.setAdapter(moviesadapter);
-        fetchMovieData getData=new fetchMovieData();
+
 
         getData.execute();
         return rootView;
@@ -126,7 +141,7 @@ public class gridFragment extends Fragment {
 
                 Uri builtUri = Uri.parse(BASE_URl).buildUpon()
                         //There shoulb be a better way to secure the key !!
-                        .appendQueryParameter("api_key", "")
+                        .appendQueryParameter("api_key", "d6b3dbd8bd91d833b88bf50495e6d735")
                         .build();
 
                 URL url = new URL(builtUri.toString());
