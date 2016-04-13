@@ -28,15 +28,16 @@ public class moviesDBTests {
         getTargetContext().deleteDatabase(MoviesDB.DB_NAME);
         DbHelper = new MoviesDB(getTargetContext());
     }
-    @Test
+    //@Test
     public void createTest(){
         SQLiteDatabase DB=DbHelper.getWritableDatabase();
         Assert.assertTrue(DB.isOpen());
         //To check if the database contains the required table
         Cursor c=DB.rawQuery("SELECT name FROM sqlite_master WHERE type='table'", null);
         Assert.assertNotEquals("No tables Created ", null, c);
+       // DbHelper.onCreate(DB);
         //To test if all the columns are in the table
-        c = DB.rawQuery("PRAGMA table_info(" +MovieDBContract.MovieInfoContract.MOVIE_TABLE_NAME+ ")",
+        c = DB.rawQuery("PRAGMA table_info(" + MovieDBContract.MovieInfoContract.MOVIE_TABLE_NAME+ ")",
                null);
         final HashSet<String> MoviesColumnHashSet = new HashSet<String>();
         MoviesColumnHashSet.add(MovieDBContract.MovieInfoContract._ID);
@@ -66,6 +67,7 @@ public class moviesDBTests {
     public void addToFavTest(){
       // SQLiteDatabase Db=new MoviesDB(mContext).getWritableDatabase();
         SQLiteDatabase DB=DbHelper.getWritableDatabase();
+
         //Movie(String id,String name,String desc,String poster,String vote,String release)
         Movie movie=new Movie("123","Interstellar","Nice Movie","123456","12","12-6");
         DbHelper.insertToFav(DB,movie);

@@ -14,7 +14,7 @@ public class MoviesDB extends SQLiteOpenHelper {
     public static final String DB_NAME="Movies.db";
     public static final int DB_VERSION=2;
 
-    private static final String CREATE_MOVIES_TABLE="CREATE TABLE "+ MovieDBContract.MovieInfoContract.MOVIE_TABLE_NAME +"( "
+  /*   static final String CREATE_MOVIES_TABLE="CREATE TABLE IF NOT EXISTS "+ MovieDBContract.MovieInfoContract.MOVIE_TABLE_NAME +"( "
             +MovieDBContract.MovieInfoContract._ID + " INTEGER PRIMARY KEY AUTOINCREMENT"+" , "
             +MovieDBContract.MovieInfoContract.COLUMN_NAME_Movie_IDS + "TEXT NOT NULL"+" , "
             +MovieDBContract.MovieInfoContract.COLUMN_NAME_Movie_NAMES+ "TEXT NOT NULL"+" , "
@@ -22,14 +22,24 @@ public class MoviesDB extends SQLiteOpenHelper {
             +MovieDBContract.MovieInfoContract.COLUMN_NAME_Movie_DESCRIPTIONS+"TEXT NOT NULL" +" , "
             +MovieDBContract.MovieInfoContract.COLUMN_NAME_Movie_RELEASE_DATES+"TEXT NOT NULL"+" , "
             +MovieDBContract.MovieInfoContract.COLUMN_NAME_Movie_VOTES+"TEXT"+" )";
-
+*/
     public MoviesDB(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+         final String CREATE_MOVIES_TABLE="CREATE TABLE IF NOT EXISTS "+ MovieDBContract.MovieInfoContract.MOVIE_TABLE_NAME +"( "
+                +MovieDBContract.MovieInfoContract._ID + " INTEGER PRIMARY KEY AUTOINCREMENT"+" , "
+              //  +MovieDBContract.MovieInfoContract.COLUMN_NAME_Movie_IDS + " TEXT NOT NULL"+" , "
+                +MovieDBContract.MovieInfoContract.COLUMN_NAME_Movie_NAMES+ " TEXT NOT NULL"+" , "
+                +MovieDBContract.MovieInfoContract.COLUMN_NAME_Movie_POSTERS+ " TEXT NOT NULL" +" , "
+                +MovieDBContract.MovieInfoContract.COLUMN_NAME_Movie_DESCRIPTIONS+" TEXT NOT NULL" +" , "
+                +MovieDBContract.MovieInfoContract.COLUMN_NAME_Movie_RELEASE_DATES+" TEXT NOT NULL"+" , "
+                +MovieDBContract.MovieInfoContract.COLUMN_NAME_Movie_VOTES+" TEXT"+" )";
+
         db.execSQL(CREATE_MOVIES_TABLE);
+        //db.execSQL("heey");
 
     }
 
