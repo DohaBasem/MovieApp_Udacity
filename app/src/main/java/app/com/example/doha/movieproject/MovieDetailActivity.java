@@ -10,9 +10,14 @@ public class MovieDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_detail);
+        //Add the fragment of detail to the container
+        if(savedInstanceState==null){
+            getSupportFragmentManager().beginTransaction().add(R.id.movie_detail_container,new MovieDetailActivityFragment()).commit();
+
+
+        }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
     }
 

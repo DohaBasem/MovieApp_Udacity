@@ -11,6 +11,31 @@ public class Movie implements Serializable{
     private String Name;
     private String Desc;
     private String Poster;
+
+    public void setDesc(String desc) {
+        Desc = desc;
+    }
+
+    public void setId(String id) {
+        Id = id;
+    }
+
+    public void setName(String name) {
+        Name = name;
+    }
+
+    public void setPoster(String poster) {
+        Poster = poster;
+    }
+
+    public void setRelease(String release) {
+        this.release = release;
+    }
+
+    public void setVote_count(String vote_count) {
+        this.vote_count = vote_count;
+    }
+
     private String vote_count;
     private String release;
 

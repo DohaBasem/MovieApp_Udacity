@@ -64,21 +64,31 @@ public class moviesDBTests {
 
     }
     @Test
-    public void addToFavTest(){
+    public void addAndGetFavTest(){
       // SQLiteDatabase Db=new MoviesDB(mContext).getWritableDatabase();
         SQLiteDatabase DB=DbHelper.getWritableDatabase();
 
         //Movie(String id,String name,String desc,String poster,String vote,String release)
         Movie movie=new Movie("123","Interstellar","Nice Movie","123456","12","12-6");
-        DbHelper.insertToFav(DB,movie);
+        DbHelper.insertToFav(DB, movie);
       //  assertEquals(true, Db.isOpen());
 
        // Db.close();
         //Log.d(DB_Created,"DB Create successfully");
-
+        Cursor c=DbHelper.getAllFavorites(DB);
+        Assert.assertTrue("Databases didn't return anything",c.moveToFirst());
+        Assert.assertFalse("More Than 1 record ", c.moveToNext());
 
 
     }
+ /*   @Test
+    public void getFavTest(){
+        SQLiteDatabase DB=DbHelper.getReadableDatabase();
+        Cursor c=DbHelper.getAllFavorites(DB);
+        Assert.assertTrue("Databases didn't return anything", c.moveToFirst());
+        Assert.assertFalse("More Than 1 record ",c.moveToNext());
+
+    }*/
     @After
 
     public void tearDown() throws Exception {

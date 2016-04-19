@@ -12,8 +12,22 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        boolean TwoPane;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //Check if it is 2 pane or 1 pane
+        if(findViewById(R.id.movie_detail_container)!=null){
+            TwoPane=true;
+            if (savedInstanceState == null) {
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.movie_detail_container, new MovieDetailActivityFragment())
+                        .commit();
+
+        }
+        else{
+            TwoPane=false;
+            }
+        }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 

@@ -38,11 +38,12 @@ public class GridAdapter extends ArrayAdapter {
         if(itemView==null) //No recycled view ,so I will create my own view
 
         itemView=inflater.inflate(R.layout.new_image_item,null);
+      //      itemView=inflater.inflate(R.layout.grid_item,null);
 
         String myUrl="http://image.tmdb.org/t/p/"+"w342"+this.Movies.get(position).getPoster();
 
        Log.d("URL", myUrl);
-        Picasso.with(getContext()).load(myUrl).into((ImageView)itemView);
+        Picasso.with(getContext()).load(myUrl).into((ImageView) itemView);
 
         return itemView;
     }

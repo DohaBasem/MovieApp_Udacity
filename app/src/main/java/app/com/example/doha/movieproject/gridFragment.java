@@ -1,11 +1,14 @@
 package app.com.example.doha.movieproject;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,6 +30,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+import app.com.example.doha.movieproject.DB.MovieDBContract;
+import app.com.example.doha.movieproject.DB.MoviesDB;
+
+import static android.widget.AdapterView.OnItemClickListener;
+
 /**
  * A placeholder fragment containing a simple view.
  */
@@ -39,7 +47,14 @@ public class gridFragment extends Fragment {
     public gridFragment() {
         setHasOptionsMenu(true);
     }
-   
+
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater=new MenuInflater(getActivity());
+        inflater.inflate(R.menu.item_contextmenu,menu);
+    }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -68,6 +83,12 @@ public class gridFragment extends Fragment {
                 fetchMovieData getRateData=new fetchMovieData();
                 getRateData.execute();
                 return true;
+            }
+            case(R.id.favorites):{
+                //Object of class that extends the asyncTask of fetching from DB and executing it
+                DBTransactions favorites=new DBTransactions();
+                favorites.execute();
+
             }
 
 
@@ -219,14 +240,126 @@ return null;
 
                 myGrid =(GridView)getActivity().findViewById(R.id.myGrid);
                 myGrid.setAdapter(moviesadapter);
-                myGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                myGrid.setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Movie SelectedMovie= (Movie) moviesadapter.getItem(position);
-                        String MovieName=SelectedMovie.getName();
+                        Movie SelectedMovie = (Movie) moviesadapter.getItem(position);
+                        String MovieName = SelectedMovie.getName();
                         //Toast.makeText(getActivity(),MovieName,Toast.LENGTH_LONG).show();
-                        Intent toDetail=new Intent(getActivity(),MovieDetailActivity.class).putExtra("SelectedMovieData",SelectedMovie);
+                        Intent toDetail = new Intent(getActivity(), MovieDetailActivity.class).putExtra("SelectedMovieData", SelectedMovie);
                         startActivity(toDetail);
+                    }
+                });
+                //For each Item when it is long clicked a context item appears
+                myGrid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
+
+
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                        return false;
+                    }
+                });
+
+
+            }
+        }
+    }
+    public class DBTransactions extends AsyncTask<Void,Void,Void> {
+
+        public ArrayList<Movie>Movies=new ArrayList<Movie>();
+        @Override
+        protected Void doInBackground(Void... params) {
+            MoviesDB DBHelper=new MoviesDB(getContext());
+            Movie Addedmovie=new Movie("123","Interstellar","Nice Movie","123456","12","12-6");
+            SQLiteDatabase DBWrite=DBHelper.getWritableDatabase();
+           DBHelper.insertToFav(DBWrite,Addedmovie);
+            SQLiteDatabase DB=DBHelper.getReadableDatabase();
+            Cursor cursor=DBHelper.getAllFavorites(DB);
+
+            /*while(cursor.moveToNext()){
+
+                Log.d("Movie Name",cursor.getString(cursor.getColumnIndex(MovieDBContract.MovieInfoContract.COLUMN_NAME_Movie_NAMES)));
+
+            }*/
+            int count=cursor.getColumnCount();
+            while(cursor.moveToNext()){
+                Movie movie=new Movie(null,null,null,null,null,null);
+            for(int i=1;i<count;i++){
+
+                String colName=cursor.getColumnName(i);
+                switch (colName){
+                    case (MovieDBContract.MovieInfoContract.COLUMN_NAME_Movie_IDS):{
+                        movie.setId(cursor.getString(i));
+                       break;
+                    }
+                    case (MovieDBContract.MovieInfoContract.COLUMN_NAME_Movie_NAMES):{
+                        movie.setName(cursor.getString(i));
+                        break;
+                    }
+                    case (MovieDBContract.MovieInfoContract.COLUMN_NAME_Movie_DESCRIPTIONS):{
+                        movie.setDesc(cursor.getString(i));
+                        break;
+                    }
+                    case (MovieDBContract.MovieInfoContract.COLUMN_NAME_Movie_POSTERS):{
+                        movie.setPoster(cursor.getString(i));
+                        break;
+                    }
+                    case (MovieDBContract.MovieInfoContract.COLUMN_NAME_Movie_RELEASE_DATES):{
+                        movie.setRelease(cursor.getString(i));
+                        break;
+                    }
+
+                }}
+            Movies.add(movie);}
+            int i=0;
+            while(i<Movies.size()){
+                Movies.get(i);
+
+                Log.d("Name from list",Movies.get(i).getName());
+                i++;
+
+            }
+
+
+
+
+            //Encapsulate the contents of 1 row into a movie object
+            //Append the movie object to the arraylist
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if(Movies!=null)
+            {
+
+                final GridAdapter moviesadapter=new GridAdapter(getActivity(),R.layout.grid_item,this.Movies);
+
+                // moviesadapter.clear();
+                moviesadapter.notifyDataSetChanged();
+
+                myGrid =(GridView)getActivity().findViewById(R.id.myGrid);
+                myGrid.setAdapter(moviesadapter);
+                myGrid.setOnItemClickListener(new OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        Movie SelectedMovie = (Movie) moviesadapter.getItem(position);
+                        String MovieName = SelectedMovie.getName();
+                        //Toast.makeText(getActivity(),MovieName,Toast.LENGTH_LONG).show();
+                        Intent toDetail = new Intent(getActivity(), MovieDetailActivity.class).putExtra("SelectedMovieData", SelectedMovie);
+                        startActivity(toDetail);
+                    }
+                });
+                //For each Item when it is long clicked a context item appears
+                myGrid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
+
+
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                        return false;
                     }
                 });
 

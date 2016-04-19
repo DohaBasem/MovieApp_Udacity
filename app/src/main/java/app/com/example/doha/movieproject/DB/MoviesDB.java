@@ -55,9 +55,16 @@ public class MoviesDB extends SQLiteOpenHelper {
                 "VALUES ( '"+movie.getName()+"','"+movie.getPoster()+"','"+movie.getDesc()+"','"+movie.getRelease()+"','"+movie.getVote_count()+"')";
     db.execSQL(ADD_MOVIE_TO_FAV_QUERY);
     }
-    public void getAllFavorites(SQLiteDatabase db){
-        final String GET_ALL_FAV="SELECT * FROM "+MovieDBContract.MovieInfoContract.MOVIE_TABLE_NAME;
-        Cursor cursor=db.rawQuery(GET_ALL_FAV,null);
+    public void removeFromFav(SQLiteDatabase db,Movie movie){
+        final String REMOVE_FROM_FAV="DELETE FROM "+ MovieDBContract.MovieInfoContract.MOVIE_TABLE_NAME +" WHERE "+ MovieDBContract.MovieInfoContract.COLUMN_NAME_Movie_NAMES +" = '"+ movie.getName()+" '";
+        db.execSQL(REMOVE_FROM_FAV);
 
     }
+    public Cursor getAllFavorites(SQLiteDatabase db){
+        final String GET_ALL_FAV="SELECT * FROM "+MovieDBContract.MovieInfoContract.MOVIE_TABLE_NAME;
+        Cursor cursor=db.rawQuery(GET_ALL_FAV,null);
+        return cursor;
+
+    }
+
 }
