@@ -1,6 +1,5 @@
 package app.com.example.doha.movieproject;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
@@ -41,6 +40,7 @@ import static android.widget.AdapterView.OnItemClickListener;
 public class gridFragment extends Fragment {
     String BASE_URl="http://api.themoviedb.org/3/movie/popular?";
     GridView myGrid;
+    boolean TwoPane;
     fetchMovieData getData=new fetchMovieData();
 
 
@@ -246,12 +246,23 @@ return null;
                         Movie SelectedMovie = (Movie) moviesadapter.getItem(position);
                         String MovieName = SelectedMovie.getName();
                         //Toast.makeText(getActivity(),MovieName,Toast.LENGTH_LONG).show();
-                        Intent toDetail = new Intent(getActivity(), MovieDetailActivity.class).putExtra("SelectedMovieData", SelectedMovie);
-                        startActivity(toDetail);
+                        Log.d("Movie ID ", SelectedMovie.getId());
+                        /*if (MainActivity.TwoPane) {
+
+                            Log.d("Tablet","Tab");
+                            MovieDetailActivityFragment detail = MovieDetailActivityFragment.getInstance(SelectedMovie);
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.movie_detail_container, detail).commit();
+
+                        } else {
+                            Intent toDetail = new Intent(getActivity(), MovieDetailActivity.class).putExtra("SelectedMovieData", SelectedMovie);
+                            startActivity(toDetail);
+                        }*/
+                        Passable AttachedAct = (Passable)getActivity();
+                        AttachedAct.passSelectedMovie(SelectedMovie);
                     }
                 });
                 //For each Item when it is long clicked a context item appears
-                myGrid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener(){
+                myGrid.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
 
 
                     @Override
@@ -271,9 +282,9 @@ return null;
         @Override
         protected Void doInBackground(Void... params) {
             MoviesDB DBHelper=new MoviesDB(getContext());
-            Movie Addedmovie=new Movie("123","Interstellar","Nice Movie","123456","12","12-6");
+            //Movie Addedmovie=new Movie("123","Interstellar","Nice Movie","123456","12","12-6");
             SQLiteDatabase DBWrite=DBHelper.getWritableDatabase();
-           DBHelper.insertToFav(DBWrite,Addedmovie);
+           //DBHelper.insertToFav(DBWrite,Addedmovie);
             SQLiteDatabase DB=DBHelper.getReadableDatabase();
             Cursor cursor=DBHelper.getAllFavorites(DB);
 
@@ -285,7 +296,7 @@ return null;
             int count=cursor.getColumnCount();
             while(cursor.moveToNext()){
                 Movie movie=new Movie(null,null,null,null,null,null);
-            for(int i=1;i<count;i++){
+            for(int i=0;i<count;i++){
 
                 String colName=cursor.getColumnName(i);
                 switch (colName){
@@ -307,6 +318,10 @@ return null;
                     }
                     case (MovieDBContract.MovieInfoContract.COLUMN_NAME_Movie_RELEASE_DATES):{
                         movie.setRelease(cursor.getString(i));
+                        break;
+                    }
+                    case (MovieDBContract.MovieInfoContract.COLUMN_NAME_Movie_VOTES):{
+                        movie.setVote_count(cursor.getString(i));
                         break;
                     }
 
@@ -345,11 +360,14 @@ return null;
                 myGrid.setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
                         Movie SelectedMovie = (Movie) moviesadapter.getItem(position);
-                        String MovieName = SelectedMovie.getName();
-                        //Toast.makeText(getActivity(),MovieName,Toast.LENGTH_LONG).show();
-                        Intent toDetail = new Intent(getActivity(), MovieDetailActivity.class).putExtra("SelectedMovieData", SelectedMovie);
-                        startActivity(toDetail);
+                        String MovieName = SelectedMovie.getId();
+                        Passable AttachedActivity=(Passable)getActivity();
+                        AttachedActivity.passSelectedMovie(SelectedMovie);
+                      //  Toast.makeText(getActivity(),MovieName, Toast.LENGTH_LONG).show();
+                        /*Intent toDetail = new Intent(getActivity(), MovieDetailActivity.class).putExtra("SelectedMovieData", SelectedMovie);
+                        startActivity(toDetail);*/
                     }
                 });
                 //For each Item when it is long clicked a context item appears

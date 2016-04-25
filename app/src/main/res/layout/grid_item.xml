@@ -5,21 +5,12 @@
     android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/poster"
-        android:layout_width="200dp"
+        android:layout_width="match_parent"
         android:layout_height="200dp"
         android:background="@color/colorAccent"
 
         />
 
-    <Button
-        android:background="@color/colorPrimary"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Favorite"
-        android:id="@+id/FavButton"
-
-        android:layout_alignRight="@+id/poster"
-        android:layout_alignBottom="@+id/poster" />
 
 
 </RelativeLayout>

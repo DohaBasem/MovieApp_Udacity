@@ -1,5 +1,6 @@
 package app.com.example.doha.movieproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -8,15 +9,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity implements Passable {
+    static boolean TwoPane;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        boolean TwoPane;
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //Check if it is 2 pane or 1 pane
-        if(findViewById(R.id.movie_detail_container)!=null){
+        /*if(findViewById(R.id.movie_detail_container)!=null){
             TwoPane=true;
             if (savedInstanceState == null) {
                 getSupportFragmentManager().beginTransaction()
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         else{
             TwoPane=false;
             }
-        }
+        }*/
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -65,5 +66,28 @@ public class MainActivity extends AppCompatActivity {
         }
         if(id==R.id.rating){}
         return super.onOptionsItemSelected(item);
+    }
+    public void passSelectedMovie(Movie SelectedMovie){
+
+            //Create an instance of details fragment
+            if(findViewById(R.id.movie_detail_container)!=null){
+                MovieDetailActivityFragment detail=MovieDetailActivityFragment.getInstance(SelectedMovie);
+                TwoPane=true;
+                getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.movie_detail_container, detail)
+                            .commit();
+
+
+
+        }
+        else{
+                TwoPane=false;
+                Intent toDetail = new Intent(this, MovieDetailActivity.class).putExtra("SelectedMovieData", SelectedMovie);
+                startActivity(toDetail);
+
+            }
+
+
+
     }
 }

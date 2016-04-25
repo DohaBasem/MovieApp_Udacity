@@ -1,4 +1,5 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,15 +8,46 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="app.com.example.doha.movieproject.MovieDetailActivityFragment"
-    tools:showIn="@layout/activity_movie_detail">
+    tools:showIn="@layout/activity_movie_detail"
+    android:orientation="vertical">
 
-
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
     <ImageView
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:id="@+id/posterInDetatil"
         android:background="@color/colorPrimary"
         android:layout_alignParentTop="true" />
+    <LinearLayout
+        android:layout_width="100dp"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/MovieVote"
+        android:layout_alignTop="@+id/posterInDetatil"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/date"
+        android:layout_marginTop="61dp"
+        android:layout_below="@+id/MovieVote"
+        android:layout_alignLeft="@+id/MovieVote"
+        android:layout_alignStart="@+id/MovieVote"
+
+        />
+    </LinearLayout>
+    </LinearLayout>
 
     <TextView
         android:layout_width="200dp"
@@ -25,46 +57,37 @@
         android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
-
+<ScrollView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="10dp"
         android:text="New Text"
         android:id="@+id/DescView"
         android:layout_below="@+id/NameView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="29dp" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/MovieVote"
-        android:layout_alignTop="@+id/posterInDetatil"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/date"
-        android:layout_marginTop="61dp"
-        android:layout_below="@+id/MovieVote"
-        android:layout_alignLeft="@+id/MovieVote"
-        android:layout_alignStart="@+id/MovieVote" />
+</ScrollView>
+<ScrollView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/trailersList"
         android:layout_below="@+id/NameView"></ListView>
+    </ScrollView>
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/ReviewsList"
         android:layout_alignTop="@+id/DescView"></ListView>
-
+    </ScrollView>
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -74,4 +97,4 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
-</RelativeLayout>
+</LinearLayout>

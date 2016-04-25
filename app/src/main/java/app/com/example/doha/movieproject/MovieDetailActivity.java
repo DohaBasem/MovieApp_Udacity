@@ -12,9 +12,10 @@ public class MovieDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_movie_detail);
         //Add the fragment of detail to the container
         if(savedInstanceState==null){
-            getSupportFragmentManager().beginTransaction().add(R.id.movie_detail_container,new MovieDetailActivityFragment()).commit();
-
-
+            //getSupportFragmentManager().beginTransaction().add(R.id.movie_detail_container,new MovieDetailActivityFragment()).commit();
+            Movie SelectedMovie=(Movie)getIntent().getSerializableExtra("SelectedMovieData");
+            MovieDetailActivityFragment detail=MovieDetailActivityFragment.getInstance(SelectedMovie);
+          getSupportFragmentManager().beginTransaction().replace(R.id.movie_detail_container,detail).commit();
         }
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

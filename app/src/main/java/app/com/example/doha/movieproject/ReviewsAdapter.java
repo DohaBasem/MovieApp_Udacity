@@ -6,9 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
-
-import com.squareup.picasso.Picasso;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -16,14 +14,14 @@ import java.util.ArrayList;
  * Created by DOHA on 18/03/2016.
  */
 //To make the grid items be displayed with my defined grid item layout
-public class GridAdapter extends ArrayAdapter {
+public class ReviewsAdapter extends ArrayAdapter {
 
-    ArrayList<Movie> Movies;
+    ArrayList<Review> Reviews;
     Context AdapterContext;
 
-    public GridAdapter(Context context, int resource,ArrayList<Movie> Movies) {
-        super(context, resource, Movies);
-        this.Movies=Movies;
+    public ReviewsAdapter(Context context, int resource, ArrayList Reviews) {
+        super(context, resource, Reviews);
+        this.Reviews=Reviews;
         this.AdapterContext=context;
         inflater=LayoutInflater.from(AdapterContext);
     }
@@ -37,13 +35,14 @@ public class GridAdapter extends ArrayAdapter {
 
         if(itemView==null) //No recycled view ,so I will create my own view
 
-        itemView=inflater.inflate(R.layout.new_image_item,null);
+        itemView=inflater.inflate(R.layout.review_item,null);
       //      itemView=inflater.inflate(R.layout.grid_item,null);
 
-       String myUrl="http://image.tmdb.org/t/p/"+"w342"+this.Movies.get(position).getPoster();
-       // String myUrl="http://image.tmdb.org/t/p/"+this.Movies.get(position).getPoster();
-       Log.d("URL", myUrl);
-        Picasso.with(getContext()).load(myUrl).into((ImageView) itemView);
+        TextView authorText=(TextView)itemView.findViewById(R.id.author);
+        TextView reviewText=(TextView)itemView.findViewById(R.id.content);
+        authorText.setText(this.Reviews.get(position).getAuthor());
+        reviewText.setText(this.Reviews.get(position).getContent());
+
 
         return itemView;
     }
@@ -52,7 +51,8 @@ public class GridAdapter extends ArrayAdapter {
     public int getCount() {
 
         //int count =this.ImgUrls.size();
-        int count =this.Movies.size();
+        Integer count =this.Reviews.size();
+        Log.d("REVIEWS Count ",count.toString());
         return count;
     }
 }
