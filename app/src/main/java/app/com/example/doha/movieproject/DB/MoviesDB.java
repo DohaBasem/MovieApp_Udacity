@@ -32,7 +32,7 @@ public class MoviesDB extends SQLiteOpenHelper {
          final String CREATE_MOVIES_TABLE="CREATE TABLE IF NOT EXISTS "+ MovieDBContract.MovieInfoContract.MOVIE_TABLE_NAME +"( "
                 +MovieDBContract.MovieInfoContract._ID + " INTEGER PRIMARY KEY AUTOINCREMENT"+" , "
                 +MovieDBContract.MovieInfoContract.COLUMN_NAME_Movie_IDS + " TEXT NOT NULL"+" , "
-                +MovieDBContract.MovieInfoContract.COLUMN_NAME_Movie_NAMES+ " TEXT NOT NULL UNIQUE "+" , "
+                +MovieDBContract.MovieInfoContract.COLUMN_NAME_Movie_NAMES+ " TEXT NOT NULL  "+" , "
                 +MovieDBContract.MovieInfoContract.COLUMN_NAME_Movie_POSTERS+ " TEXT NOT NULL" +" , "
                 +MovieDBContract.MovieInfoContract.COLUMN_NAME_Movie_DESCRIPTIONS+" TEXT NOT NULL" +" , "
                 +MovieDBContract.MovieInfoContract.COLUMN_NAME_Movie_RELEASE_DATES+" TEXT NOT NULL"+" , "
@@ -63,8 +63,26 @@ public class MoviesDB extends SQLiteOpenHelper {
     public Cursor getAllFavorites(SQLiteDatabase db){
         final String GET_ALL_FAV="SELECT * FROM "+MovieDBContract.MovieInfoContract.MOVIE_TABLE_NAME;
         Cursor cursor=db.rawQuery(GET_ALL_FAV,null);
+       int count= cursor.getCount();
         return cursor;
 
     }
+public boolean checkFilmExists(Movie movie,SQLiteDatabase db){
+    String searchQuery="SELECT * FROM "+ MovieDBContract.MovieInfoContract.MOVIE_TABLE_NAME+" WHERE " +MovieDBContract.MovieInfoContract.COLUMN_NAME_Movie_NAMES +
+            " = ' "+ movie.getName() +" '";
 
+    Cursor c=db.rawQuery(searchQuery,null);
+    if(c.getCount()==0){
+        c.close();
+        return false;
+
+    }
+    else{
+        c.close();
+        return true;
+
+    }
+
+
+}
 }

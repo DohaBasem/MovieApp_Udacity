@@ -247,16 +247,7 @@ return null;
                         String MovieName = SelectedMovie.getName();
                         //Toast.makeText(getActivity(),MovieName,Toast.LENGTH_LONG).show();
                         Log.d("Movie ID ", SelectedMovie.getId());
-                        /*if (MainActivity.TwoPane) {
 
-                            Log.d("Tablet","Tab");
-                            MovieDetailActivityFragment detail = MovieDetailActivityFragment.getInstance(SelectedMovie);
-                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.movie_detail_container, detail).commit();
-
-                        } else {
-                            Intent toDetail = new Intent(getActivity(), MovieDetailActivity.class).putExtra("SelectedMovieData", SelectedMovie);
-                            startActivity(toDetail);
-                        }*/
                         Passable AttachedAct = (Passable)getActivity();
                         AttachedAct.passSelectedMovie(SelectedMovie);
                     }
@@ -296,6 +287,7 @@ return null;
             int count=cursor.getColumnCount();
             while(cursor.moveToNext()){
                 Movie movie=new Movie(null,null,null,null,null,null);
+                Log.d("Movie In favorie ",cursor.getString(cursor.getColumnIndex(MovieDBContract.MovieInfoContract.COLUMN_NAME_Movie_NAMES)));
             for(int i=0;i<count;i++){
 
                 String colName=cursor.getColumnName(i);

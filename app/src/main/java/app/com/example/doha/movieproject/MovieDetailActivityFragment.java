@@ -38,6 +38,8 @@ import app.com.example.doha.movieproject.DB.MoviesDB;
  */
 public class MovieDetailActivityFragment extends Fragment {
    public Movie SelectedMovie;
+
+    boolean FilmExists;
     public MovieDetailActivityFragment() {
     }
     public static MovieDetailActivityFragment getInstance(Movie movie){
@@ -54,16 +56,25 @@ public class MovieDetailActivityFragment extends Fragment {
         View detailView= inflater.inflate(R.layout.fragment_movie_detail, container, false);
         //final Movie SelectedMovie=(Movie)getActivity().getIntent().getSerializableExtra("SelectedMovieData");
        // final Movie SelectedMovie= (Movie) getArguments().getSerializable("SelectedMovie");
+
+         final MoviesDB DBHelper = new MoviesDB(getContext());
+        final SQLiteDatabase db = DBHelper.getWritableDatabase();
+        final Button favButton=(Button)detailView.findViewById(R.id.favoriteButton);
         this.SelectedMovie=(Movie) getArguments().getSerializable("SelectedMovie");
         if(SelectedMovie!=null){
+         FilmExists=DBHelper.checkFilmExists(this.SelectedMovie,db);
+         if(FilmExists){
+            favButton.setText("Unfavorite");
+         }
+            else favButton.setText("Favorite");
         String ImgUrl="http://image.tmdb.org/t/p/"+"original"+SelectedMovie.getPoster();
         ImageView ImgHolder=(ImageView)detailView.findViewById(R.id.posterInDetatil);
-        TextView NameHolder=(TextView)detailView.findViewById(R.id.NameView);
+       // TextView NameHolder=(TextView)detailView.findViewById(R.id.NameView);
         TextView DescHolder=(TextView)detailView.findViewById(R.id.DescView);
         TextView Vote=(TextView)detailView.findViewById(R.id.MovieVote);
         TextView date=(TextView)detailView.findViewById(R.id.date);
 
-        NameHolder.setText(SelectedMovie.getName());
+       // NameHolder.setText(SelectedMovie.getName());
         DescHolder.setText(SelectedMovie.getDesc());
         Vote.setText("Average Vote : "+SelectedMovie.getVote_count());
         date.setText("Release date : "+SelectedMovie.getRelease());
@@ -72,14 +83,13 @@ public class MovieDetailActivityFragment extends Fragment {
 
         //LayoutInflater inflater =LayoutInflater.from(this);
         //View detail=inflater.inflate(R.layout.fragment_movie_detail,null);
-        final Button favButton =(Button)detailView.findViewById(R.id.favoriteButton);
+
         favButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String onButtonString = favButton.getText().toString();
-                MoviesDB DBHelper = new MoviesDB(getContext());
-                SQLiteDatabase db = DBHelper.getWritableDatabase();
-                if (onButtonString.equals("Favorite")) {
+
+                if (!FilmExists) {
 
                     DBHelper.insertToFav(db, SelectedMovie);
                     Toast.makeText(getContext(), "Successfully added ", Toast.LENGTH_LONG).show();
@@ -375,6 +385,7 @@ public class MovieDetailActivityFragment extends Fragment {
                 trailersadapter.notifyDataSetChanged();
 
                 ListView TrailersList =(ListView)getActivity().findViewById(R.id.trailersList);
+
                 TrailersList.setAdapter(trailersadapter);
                TrailersList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                    @Override
